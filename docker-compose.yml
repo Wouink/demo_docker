@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  webserver:
+    #image: php:7.4-apache
+    image: wink/php-mysql:7.4-apache
+    restart: unless-stopped
+    volumes:
+      - ./web:/var/www/html
+    ports:
+      - 8080:80
+    depends_on:
+      - database
+
+  database:
+    image: mariadb:11.4.2-noble
+    restart: unless-stopped
+    volumes:
+      - ./db:/var/lib/mysql
+    ports:
+      # pour l'injection des donnees
+      - 3306:3306
+    environment:
+      - MARIADB_ROOT_PASSWORD=12security34
+      - MARIADB_DATABASE=demo
